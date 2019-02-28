@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lemonit.lemserver.dao.PublishMapper" >
+  <resultMap id="BaseResultMap" type="cn.lemonit.lemserver.domian.Publish" >
+    <constructor >
+      <idArg column="publish_key" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="tag_key" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="version_key" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="publish_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="force_update" jdbcType="TINYINT" javaType="java.lang.Boolean" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    publish_key, tag_key, version_key, publish_time,force_update
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from lem_publish
+    where publish_key = #{publishKey,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByTagkey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from lem_publish
+    where tag_key = #{tagKey,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByVersionkey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from lem_publish
+    where version_key = #{versionKey,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from lem_publish
+    where publish_key = #{publishKey,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.lemonit.lemserver.domian.Publish" >
+    insert into lem_publish (publish_key, publish_id, tag_key,
+      version_key, publish_time,force_update)
+    values (#{publishKey,jdbcType=VARCHAR}, #{publishId,jdbcType=INTEGER}, #{tagKey,jdbcType=VARCHAR}, 
+      #{versionKey,jdbcType=VARCHAR}), #{publishTime,jdbcType=TIMESTAMP}，#(forceUpdate,jdbcType=TINYINT)
+  </insert>
+  <insert id="insertSelective" parameterType="cn.lemonit.lemserver.domian.Publish" >
+    insert into lem_publish
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="publishKey != null" >
+        publish_key,
+      </if>
+      <if test="publishId != null" >
+        publish_id,
+      </if>
+      <if test="tagKey != null" >
+        tag_key,
+      </if>
+      <if test="versionKey != null" >
+        version_key,
+      </if>
+      <if test="publishTime != null">
+        publish_time,
+      </if>
+      <if test="forceUpdate != null">
+        force_update,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="publishKey != null" >
+        #{publishKey,jdbcType=VARCHAR},
+      </if>
+      <if test="publishId != null" >
+        #{publishId,jdbcType=INTEGER},
+      </if>
+      <if test="tagKey != null" >
+        #{tagKey,jdbcType=VARCHAR},
+      </if>
+      <if test="versionKey != null" >
+        #{versionKey,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+        #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="forceUpdate != null">
+        #{forceUpdate,jdbcType=TINYINT}
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.lemonit.lemserver.domian.Publish" >
+    update lem_publish
+    <set >
+      <if test="publishId != null" >
+        publish_id = #{publishId,jdbcType=INTEGER},
+      </if>
+      <if test="tagKey != null" >
+        tag_key = #{tagKey,jdbcType=VARCHAR},
+      </if>
+      <if test="versionKey != null" >
+        version_key = #{versionKey,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+        publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="forceUpdate != null">
+        force_update = #{forceUpdate,jdbcType=TINYINT}
+      </if>
+    </set>
+    where publish_key = #{publishKey,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.lemonit.lemserver.domian.Publish" >
+    update lem_publish
+    set publish_id = #{publishId,jdbcType=INTEGER},
+      tag_key = #{tagKey,jdbcType=VARCHAR},
+      version_key = #{versionKey,jdbcType=VARCHAR},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      force_update = #{forceUpdate,jdbcType=TINYINT}
+    where publish_key = #{publishKey,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByTagKey" parameterType="cn.lemonit.lemserver.domian.Publish" >
+    update lem_publish
+    <set >
+      <if test="versionKey != null" >
+        version_key = #{versionKey,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+        publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="forceUpdate != null">
+        force_update = #{forceUpdate,jdbcType=TINYINT}
+      </if>
+    </set>
+    where tag_key = #{tagKey,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lemonit.lemserver.dao.VersionMapper">
+  <resultMap id="BaseResultMap" type="cn.lemonit.lemserver.domian.Version">
+    <constructor>
+      <idArg column="version_key" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="app_key" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="version_icon" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="cn.lemonit.lemserver.domian.Version">
+    <constructor>
+      <idArg column="version_key" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="app_key" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="version_description" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+      <arg column="version_icon" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    version_key, create_time, app_key ,version_icon
+  </sql>
+  <sql id="Blob_Column_List">
+    version_description
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from lem_version
+    where version_key = #{versionKey,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from lem_version
+    where version_key = #{versionKey,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.lemonit.lemserver.domian.Version">
+    insert into lem_version (version_key, version_id, create_time, 
+      app_key, version_description,version_icon)
+    values (#{versionKey,jdbcType=VARCHAR}, #{versionId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{appKey,jdbcType=VARCHAR}, #{versionDescription,jdbcType=LONGVARCHAR}), #{versionIcon,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.lemonit.lemserver.domian.Version">
+    insert into lem_version
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="versionKey != null">
+        version_key,
+      </if>
+      <if test="versionId != null">
+        version_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="appKey != null">
+        app_key,
+      </if>
+      <if test="versionDescription != null">
+        version_description,
+      </if>
+      <if test="versionIcon != null">
+        version_icon
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="versionKey != null">
+        #{versionKey,jdbcType=VARCHAR},
+      </if>
+      <if test="versionId != null">
+        #{versionId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="appKey != null">
+        #{appKey,jdbcType=VARCHAR},
+      </if>
+      <if test="versionDescription != null">
+        #{versionDescription,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="versionIcon != null">
+        #{versionIcon,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.lemonit.lemserver.domian.Version">
+    update lem_version
+    <set>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="versionDescription != null">
+        version_description = #{versionDescription,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="versionIcon != null">
+        version_icon = #{versionIcon,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where version_key = #{versionKey,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.lemonit.lemserver.domian.Version">
+    update lem_version
+    set version_id = #{versionId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      app_key = #{appKey,jdbcType=VARCHAR},
+      version_description = #{versionDescription,jdbcType=LONGVARCHAR},
+      version_icon = #{versionIcon,jdbcType=VARCHAR}
+    where version_key = #{versionKey,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.lemonit.lemserver.domian.Version">
+    update lem_version
+    set version_id = #{versionId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      app_key = #{appKey,jdbcType=VARCHAR},
+      version_icon = #{versionIcon,jdbcType=VARCHAR}
+    where version_key = #{versionKey,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByAppkey" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select
+    count(*)
+    from lem_version where app_key=#{appKey}
+  </select>
+  <select id="listByPageinfo" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+    select
+    *
+    from lem_version
+    order by create_time desc
+    limit #{start},#{end}
+  </select>
+</mapper>

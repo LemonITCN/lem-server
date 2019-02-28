@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lemonit.lemserver.dao.TagMapper" >
+  <resultMap id="BaseResultMap" type="cn.lemonit.lemserver.domian.Tag" >
+    <constructor >
+      <idArg column="tag_key" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="app_key" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="tag_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="cn.lemonit.lemserver.domian.Tag" >
+    <constructor >
+      <idArg column="tag_key" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="app_key" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="tag_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="tag_description" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    tag_key, app_key, tag_name, create_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    tag_description
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from lem_tag
+    where tag_key = #{tagKey,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByNameInApp" parameterType="cn.lemonit.lemserver.domian.Tag" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from lem_tag where tag_name=#{tagName} and app_key=#{appKey}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from lem_tag
+    where tag_key = #{tagKey,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.lemonit.lemserver.domian.Tag" >
+    insert into lem_tag (tag_key, tag_id, app_key, 
+      tag_name, create_time, tag_description
+      )
+    values (#{tagKey,jdbcType=VARCHAR}, #{tagId,jdbcType=INTEGER}, #{appKey,jdbcType=VARCHAR}, 
+      #{tagName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{tagDescription,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.lemonit.lemserver.domian.Tag" >
+    insert into lem_tag
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tagKey != null" >
+        tag_key,
+      </if>
+      <if test="tagId != null" >
+        tag_id,
+      </if>
+      <if test="appKey != null" >
+        app_key,
+      </if>
+      <if test="tagName != null" >
+        tag_name,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="tagDescription != null" >
+        tag_description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tagKey != null" >
+        #{tagKey,jdbcType=VARCHAR},
+      </if>
+      <if test="tagId != null" >
+        #{tagId,jdbcType=INTEGER},
+      </if>
+      <if test="appKey != null" >
+        #{appKey,jdbcType=VARCHAR},
+      </if>
+      <if test="tagName != null" >
+        #{tagName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tagDescription != null" >
+        #{tagDescription,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.lemonit.lemserver.domian.Tag" >
+    update lem_tag
+    <set >
+      <if test="tagName != null" >
+        tag_name = #{tagName,jdbcType=VARCHAR},
+      </if>
+      <if test="tagDescription != null" >
+        tag_description = #{tagDescription,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where tag_key = #{tagKey,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.lemonit.lemserver.domian.Tag" >
+    update lem_tag
+    set tag_id = #{tagId,jdbcType=INTEGER},
+      app_key = #{appKey,jdbcType=VARCHAR},
+      tag_name = #{tagName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      tag_description = #{tagDescription,jdbcType=LONGVARCHAR}
+    where tag_key = #{tagKey,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.lemonit.lemserver.domian.Tag" >
+    update lem_tag
+    set tag_id = #{tagId,jdbcType=INTEGER},
+      app_key = #{appKey,jdbcType=VARCHAR},
+      tag_name = #{tagName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where tag_key = #{tagKey,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByAppkey" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select
+    count(*)
+    from lem_tag where app_key=#{appKey}
+  </select>
+  <select id="listByPageinfo" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+    select
+    *
+    from lem_tag
+    order by create_time desc
+    limit #{start},#{end}
+  </select>
+</mapper>

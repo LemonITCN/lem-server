@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lemonit.lemserver.dao.NamespaceMapper" >
+  <resultMap id="BaseResultMap" type="cn.lemonit.lemserver.domian.Namespace" >
+    <constructor >
+      <idArg column="space_key" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="space_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="cn.lemonit.lemserver.domian.Namespace" >
+    <constructor >
+      <idArg column="space_key" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="space_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="space_description" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    space_key, space_name, create_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    space_description
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from lem_namespace
+    where space_key = #{spaceKey,jdbcType=VARCHAR}
+  </select>
+  <select id="listByPageinfo" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+    select
+    *
+    from lem_namespace
+    order by create_time desc
+    limit #{start},#{end}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from lem_namespace
+    where space_key = #{spaceKey,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.lemonit.lemserver.domian.Namespace" >
+    insert into lem_namespace (space_key, space_id, space_name, 
+      create_time, space_description)
+    values (#{spaceKey,jdbcType=VARCHAR}, #{spaceId,jdbcType=INTEGER}, #{spaceName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{spaceDescription,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.lemonit.lemserver.domian.Namespace" >
+    insert into lem_namespace
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="spaceKey != null" >
+        space_key,
+      </if>
+      <if test="spaceId != null" >
+        space_id,
+      </if>
+      <if test="spaceName != null" >
+        space_name,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="spaceDescription != null" >
+        space_description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="spaceKey != null" >
+        #{spaceKey,jdbcType=VARCHAR},
+      </if>
+      <if test="spaceId != null" >
+        #{spaceId,jdbcType=INTEGER},
+      </if>
+      <if test="spaceName != null" >
+        #{spaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="spaceDescription != null" >
+        #{spaceDescription,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.lemonit.lemserver.domian.Namespace" >
+    update lem_namespace
+    <set >
+      <if test="spaceName != null" >
+        space_name = #{spaceName,jdbcType=VARCHAR},
+      </if>
+        space_description = #{spaceDescription,jdbcType=LONGVARCHAR},
+    </set>
+    where space_key = #{spaceKey,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.lemonit.lemserver.domian.Namespace" >
+    update lem_namespace
+    set space_id = #{spaceId,jdbcType=INTEGER},
+      space_name = #{spaceName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      space_description = #{spaceDescription,jdbcType=LONGVARCHAR}
+    where space_key = #{spaceKey,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.lemonit.lemserver.domian.Namespace" >
+    update lem_namespace
+    set space_id = #{spaceId,jdbcType=INTEGER},
+      space_name = #{spaceName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where space_key = #{spaceKey,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByName" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from lem_namespace where space_name=#{spaceName}
+  </select>
+</mapper>

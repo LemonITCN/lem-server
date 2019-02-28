@@ -1,0 +1,22 @@
+server:
+  port: 8091
+
+spring:
+  http:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://db.lemonit.cn:10077/lem_test?useUnicode=true&charaterEncoding=UTF-8&useSSL=false
+    username: tanyouwei
+    password: tanyouwei123456%
+mybatis:
+  mapper-locations: classpath:mappers/*.xml
+
+  logging:
+    level:
+      com.example.demo.dao: debug
