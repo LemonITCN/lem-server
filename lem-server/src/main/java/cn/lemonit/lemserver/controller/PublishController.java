@@ -43,7 +43,11 @@ public class PublishController {
     //获取version
     @GetMapping("")
     public Result queryVersion(@RequestParam String tagKey){
+        System.out.println("tagKey："+tagKey+"······");
         Publish publish = publishService.selectByTagkey(tagKey);
+        if(publish==null){
+            return ResultUtil.error("empty_data");
+        }
         HashMap response = new HashMap();
         response.put("tagKey",publish.getTagKey());
         response.put("versionKey",publish.getVersionKey());

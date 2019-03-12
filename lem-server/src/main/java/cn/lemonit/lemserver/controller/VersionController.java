@@ -119,7 +119,7 @@ public class VersionController {
 
     //ios plist文件
     @GetMapping("/plist")
-    public void getplist(HttpServletRequest request, HttpServletResponse response,@RequestParam String versionKey) throws IOException {
+    public void getplist(HttpServletRequest request, HttpServletResponse response,@RequestParam String versionKey,@RequestParam(required = false) Integer size ) throws IOException {
         Version version = versionService.selectByPrimaryKey(versionKey);
         response.setContentType("application/x-msdownload");
         response.setHeader("Content-Disposition","attachment;filename=" + URLEncoder.encode(versionKey+".plist","UTF-8"));
@@ -153,7 +153,7 @@ public class VersionController {
                 "<key>needs-shine</key>" +
                 "<true/>" +
                 "<key>url</key>" +
-                "<string>http://192.168.11.117:8091/v1/version/icon?versionKey="+versionKey+"</string>" +
+                "<string>http://192.168.11.117:8091/v1/version/icon?versionKey="+versionKey+"size="+size+"</string>" +
                 "</dict>" +
                 "</array>" +
                 "<key>metadata</key>" +

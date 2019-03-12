@@ -91,6 +91,9 @@ public class PublishImpl implements PublishService {
         if (record.getVersionKey()==null){
             return deleteByTagKey(record.getTagKey());
         }
+        if(tagMapper.selectByPrimaryKey(record.getTagKey())==null){
+            throw new BaseBusinessException(ErrorMsg.tag_does_not_exit.toString());
+        }
         return publishMapper.updateByTagKey(record);
     };
 
