@@ -1,7 +1,6 @@
 package cn.lemonit.lemserver.controller;
 
 import cn.lemonit.lemoi.exceptions.ConfigInvalidException;
-import cn.lemonit.lemoi.exceptions.TargetNotExistsException;
 import cn.lemonit.lemserver.domian.App;
 import cn.lemonit.lemserver.domian.Result;
 import cn.lemonit.lemserver.domian.Version;
@@ -21,6 +20,7 @@ import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.io.*;
 
@@ -34,7 +34,6 @@ public class VersionController {
     @Autowired
     private PublishService publishService;
 
-    private String localPtah = System.getProperty("java.io.tmpdir");
     public Date getDate (){
         return new Timestamp(new Date().getTime());
     };
@@ -92,6 +91,7 @@ public class VersionController {
 
     //创建文件
     public void createFile(String filename,String content) throws IOException {
+        String localPtah = System.getProperty("java.io.tmpdir");
         File dir = new File(localPtah);
         // 一、检查放置文件的文件夹路径是否存在，不存在则创建
         if (!dir.exists()) {
@@ -121,6 +121,7 @@ public class VersionController {
     @GetMapping("/plist")
     public void getplist(HttpServletRequest request, HttpServletResponse response,@RequestParam String versionKey,@RequestParam(required = false) Integer size ) throws IOException {
         Version version = versionService.selectByPrimaryKey(versionKey);
+        App app = appService.selectByPrimaryKey(version.getAppKey());
         response.setContentType("application/x-msdownload");
         response.setHeader("Content-Disposition","attachment;filename=" + URLEncoder.encode(versionKey+".plist","UTF-8"));
         String plistContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
@@ -145,7 +146,7 @@ public class VersionController {
                 "<key>needs-shine</key>" +
                 "<true/>" +
                 "<key>url</key>" +
-                "<string>http://192.168.11.117:8091/v1/version/icon?versionKey="+versionKey+"</string>" +
+                "<string>https://oss.lemonit.cn/lem/v1/version/icon?versionKey="+versionKey+"</string>" +
                 "</dict>" +
                 "<dict>" +
                 "<key>kind</key>" +
@@ -153,19 +154,19 @@ public class VersionController {
                 "<key>needs-shine</key>" +
                 "<true/>" +
                 "<key>url</key>" +
-                "<string>http://192.168.11.117:8091/v1/version/icon?versionKey="+versionKey+"size="+size+"</string>" +
+                "<string>https://oss.lemonit.cn/lem/v1/version/icon?versionKey="+versionKey+"size="+size+"</string>" +
                 "</dict>" +
                 "</array>" +
                 "<key>metadata</key>" +
                 "<dict>" +
                 "<key>bundle-identifier</key>" +
-                "<string>com.zhongwang.zwtapp</string>" +
+                "<string>"+app.getBundleIdentifier()+"</string>" +
                 "<key>bundle-version</key>" +
                 "<string>1.0</string>" +
                 "<key>kind</key>" +
                 "<string>software</string>" +
                 "<key>title</key>" +
-                "<string>ZWT测试下载</string>" +
+                "<string>"+app.getAppName()+"</string>" +
                 "</dict>" +
                 "</dict>" +
                 "</array>" +
@@ -174,6 +175,7 @@ public class VersionController {
         createFile(versionKey+".plist",plistContent);
         OutputStream out = response.getOutputStream();
 
+        String localPtah = System.getProperty("java.io.tmpdir");
         InputStream in = new FileInputStream(localPtah+versionKey+".plist");
         byte [] buffer = new byte[1024];
         int len = 0;
@@ -182,33 +184,18 @@ public class VersionController {
         }
         in.close();
     }
+
     //下载文件
     @GetMapping("/download")
-    public void download (HttpServletRequest request, HttpServletResponse response, @RequestParam String versionKey) throws IOException  {
-
-        //根据version->app->platform->确定后缀
-        Version version = versionService.selectByPrimaryKey(versionKey);
-        App app = appService.selectByPrimaryKey(version.getAppKey());
-        String suffixName = app.getPlatform().equals("ios")?".ipa":".apk";
-        response.setContentType("application/x-msdownload");
-
-        String filename = versionKey+suffixName;
-        response.setHeader("Content-Disposition","attachment;filename=" + URLEncoder.encode(filename,"UTF-8"));
-        OutputStream out = response.getOutputStream();
-
-        LemoiUtil.download(filename);
-        InputStream in = new FileInputStream(localPtah+filename);
-        byte [] buffer = new byte[1024];
-        int len = 0;
-        while ((len=in.read(buffer))!=-1){
-            out.write(buffer,0,len);
-        }
-        in.close();
-
+    public Result download (@RequestParam String versionKey){
+        HashMap response = new HashMap();
+        response.put("ossUrl","https://oss.lemonit.cn/minio/lem/"+versionKey+".apk");
+        return ResultUtil.success(response);
     }
 
     @GetMapping("/icon")
     public void geticon(HttpServletRequest request, HttpServletResponse response, @RequestParam String versionKey,@RequestParam(required = false) Integer size) throws IOException  {
+        String localPtah = System.getProperty("java.io.tmpdir");
         Version version = versionService.selectByPrimaryKey(versionKey);
         String versionIcon = version.getVersionIcon();
         if (versionIcon==null){

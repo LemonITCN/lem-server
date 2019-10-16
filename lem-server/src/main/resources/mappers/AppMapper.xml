@@ -9,6 +9,7 @@
       <arg column="space_key" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="platform" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="app_icon" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="bundle_identifier" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="cn.lemonit.lemserver.domian.App" >
@@ -20,10 +21,11 @@
       <arg column="platform" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="app_description" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
       <arg column="app_icon" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="bundle_identifier" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    app_key, app_name, create_time, space_key, platform,app_icon
+    app_key, app_name, create_time, space_key, platform,app_icon,bundle_identifier
   </sql>
   <sql id="Blob_Column_List" >
     app_description
@@ -62,10 +64,10 @@
   <insert id="insert" parameterType="cn.lemonit.lemserver.domian.App" >
     insert into lem_app (app_key, app_id, app_name, 
       create_time, space_key, platform, 
-      app_description,app_icon)
+      app_description,app_icon,bundle_identifier)
     values (#{appKey,jdbcType=VARCHAR}, #{appId,jdbcType=INTEGER}, #{appName,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{spaceKey,jdbcType=VARCHAR}, #{platform,jdbcType=VARCHAR},
-      #{appDescription,jdbcType=LONGVARCHAR},#{appIcon,jdbcType=VARCHAR})
+      #{appDescription,jdbcType=LONGVARCHAR},#{appIcon,jdbcType=VARCHAR},#{bundleIdentifier,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.lemonit.lemserver.domian.App" >
     insert into lem_app
@@ -94,6 +96,9 @@
       <if test="appIcon != null" >
         app_icon
       </if>
+      <if test="bundleIdentifier != null" >
+        bundle_identifier
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="appKey != null" >
@@ -119,6 +124,9 @@
       </if>
       <if test="appIcon != null" >
         #{appIcon,jdbcType=VARCHAR}
+      </if>
+      <if test="bundleIdentifier != null" >
+        #{bundleIdentifier,jdbcType=VARCHAR}
       </if>
     </trim>
   </insert>

@@ -34,7 +34,7 @@ public class AppImpl implements AppService {
 
     @Override
     public int insertSelective(App record){
-        if(record.getAppName()==null||record.getPlatform()==null){
+        if(record.getAppName()==null||record.getPlatform()==null||record.getBundleIdentifier()==null){
             throw new BaseBusinessException(ErrorMsg.invalid_args.toString());
         }
         if(!(record.getPlatform().equals("ios")||record.getPlatform().equals("android"))){

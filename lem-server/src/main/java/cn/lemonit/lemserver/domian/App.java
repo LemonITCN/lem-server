@@ -12,21 +12,21 @@ public class App {
 //    @NotNull(message="invalid_args")
     private String appName;
 
+    private String bundleIdentifier;
+
     private Integer appId;
 
     private Date createTime;
 
-//    @NotNull(message="invalid_args")
     private String spaceKey;
 
-//    @NotNull(message="invalid_args")
     private String platform;
 
     private String appDescription;
 
     private String appIcon;
 
-    public App(String appKey, String appName, Date createTime, String spaceKey, String platform, String appDescription,String appIcon) {
+    public App(String appKey, String appName, Date createTime, String spaceKey, String platform, String appDescription,String appIcon,String bundleIdentifier) {
         this.appKey = appKey;
         this.appName = appName;
         this.createTime = createTime;
@@ -34,6 +34,7 @@ public class App {
         this.platform = platform;
         this.appDescription = appDescription;
         this.appIcon = appIcon;
+        this.bundleIdentifier = bundleIdentifier;
     }
 
     public App() {
@@ -46,6 +47,14 @@ public class App {
 
     public void setAppKey(String appKey) {
         this.appKey = appKey == null ? null : appKey.trim();
+    }
+
+    public String getBundleIdentifier() {
+        return bundleIdentifier;
+    }
+
+    public void setBundleIdentifier(String bundleIdentifier) {
+        this.bundleIdentifier = bundleIdentifier == null ? null : bundleIdentifier.trim();
     }
 
 //    public Integer getAppId() {

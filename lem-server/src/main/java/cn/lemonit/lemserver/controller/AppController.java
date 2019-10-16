@@ -6,6 +6,7 @@ import cn.lemonit.lemserver.domian.App;
 import cn.lemonit.lemserver.domian.Result;
 import cn.lemonit.lemserver.service.TagService;
 import cn.lemonit.lemserver.service.VersionService;
+import cn.lemonit.lemserver.utils.BaseBusinessException;
 import cn.lemonit.lemserver.utils.LemoiUtil;
 import cn.lemonit.lemserver.utils.ResultUtil;
 import cn.lemonit.lemserver.utils.ErrorMsg;
@@ -40,7 +41,6 @@ public class AppController {
     @Autowired
     private VersionService versionService;
 
-    private String localPtah = System.getProperty("java.io.tmpdir");
 
     public Date getDate (){
         return new Timestamp(new Date().getTime());
@@ -48,9 +48,11 @@ public class AppController {
 
     //创建app
     @PostMapping("")
-    public Result createApp (@RequestParam(required = false,name = "appIcon") MultipartFile appIcon,String appName,String platform,String spaceKey,String appDescription) throws IOException, ConfigInvalidException {
+    public Result createApp (@RequestParam(required = false,name = "appIcon") MultipartFile appIcon, String appName, String platform, String spaceKey,String appDescription,String bundleIdentifier) throws IOException, ConfigInvalidException {
         appService.isAppExits(spaceKey,appName,platform);
-
+        if(bundleIdentifier==null){
+            throw new BaseBusinessException(ErrorMsg.invalid_args.toString());
+        }
         String uuid = UUID.randomUUID().toString();
         App app = new App();
         app.setAppName(appName);
@@ -59,6 +61,7 @@ public class AppController {
         app.setAppDescription(appDescription);
         app.setCreateTime(getDate());
         app.setSpaceKey(spaceKey);
+        app.setBundleIdentifier(bundleIdentifier);
         if (appIcon!=null&&!appIcon.isEmpty()){
             String suffixName = appIcon.getOriginalFilename().substring(appIcon.getOriginalFilename().lastIndexOf("."));
             LemoiUtil.upload(appIcon,uuid);
@@ -79,6 +82,7 @@ public class AppController {
     //app图标
     @GetMapping("/icon")
     public void appicon(HttpServletRequest request, HttpServletResponse response, @RequestParam String appKey,@RequestParam(required = false) Integer size) throws IOException {
+        String localPtah = System.getProperty("java.io.tmpdir");
         App app = appService.selectByPrimaryKey(appKey);
         String appIcon = app.getAppIcon();
         LemoiUtil.download(appIcon);
@@ -115,7 +119,7 @@ public class AppController {
     @PutMapping("")
     public Result updateByPrimaryKeySelective (@RequestParam(required = false,name = "appIcon") MultipartFile appIcon,String appKey,String appName,String appDescription) throws IOException, ConfigInvalidException {
         App app = appService.selectByPrimaryKey(appKey);
-        appService.isAppExits(app.getSpaceKey(),appName,app.getPlatform());
+//        appService.isAppExits(app.getSpaceKey(),appName,app.getPlatform());
         app.setAppName(appName);
         app.setAppDescription(appDescription);
         if (appIcon!=null&&!appIcon.isEmpty()){

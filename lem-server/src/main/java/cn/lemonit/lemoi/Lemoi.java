@@ -16,10 +16,10 @@ import java.util.List;
  * @author lemonit_cn
  */
 public class Lemoi {
-    private static final String ACCESS_KEY = "tanyouwei";
-    private static final String SECRET_KEY = "tanyouwei123456%";
-    private static final String ENDPOINT = "http://oss.lemonit.cn";
-    private static final String BUCKET = "lem";
+    private static final String ACCESS_KEY = "AKIDzoQomZ5nCSWWM1w4MZbUEm4OVN0P3vNd";
+    private static final String SECRET_KEY = "C9waDcu2yyokwviNslV4QXTFtQQ9crth%";
+    private static final String ENDPOINT = "https://lem-repo-1255447022.cos.ap-beijing.myqcloud.com/";
+    private static final String BUCKET = "lem-repo-1255447022";
 
     public static void main(String[] args) {
 //        LemoiS3ClientConfig clientConfig = new LemoiS3ClientConfig();
