@@ -35,9 +35,7 @@ public class VersionController {
     @Autowired
     private PublishService publishService;
 
-    public Date getDate (){
-        return new Timestamp(new Date().getTime());
-    };
+    private static final String path = "https://lem-repo-1255447022.cos.ap-beijing.myqcloud.com/";
 
     //上传version
     @PostMapping("")
@@ -52,7 +50,7 @@ public class VersionController {
 
         //创建version
         Version version = new Version();
-        version.setCreateTime(getDate());
+        version.setCreateTime(new Timestamp(new Date().getTime()));
         version.setAppKey(appKey);
         version.setVersionDescription(versionDescription);
         version.setVersionKey(uuid);
@@ -63,7 +61,7 @@ public class VersionController {
             String suffixName = versionIcon.getOriginalFilename().substring(versionIcon.getOriginalFilename().lastIndexOf("."));
             TencentUtil.upload(versionIcon,uuid);
             //例：3f947b8a-9c4d-4c48-af3d-db189354b8a6.jpg
-            version.setVersionIcon(uuid+suffixName);
+            version.setVersionIcon(path+uuid+suffixName);
         }
         versionService.insertSelective(version);
 
@@ -74,7 +72,7 @@ public class VersionController {
     @PutMapping("")
     public Result updateVersion(@RequestParam(required = false,name = "file") MultipartFile file,@RequestParam(required = false,name = "versionIcon") MultipartFile versionIcon , @RequestParam String versionKey, @RequestParam(defaultValue="") String versionDescription) throws IOException, ConfigInvalidException {
         Version version = new Version();
-        version.setCreateTime(getDate());
+        version.setCreateTime(new Timestamp(new Date().getTime()));
         version.setVersionDescription(versionDescription);
         version.setVersionKey(versionKey);
         if(file!=null&&!file.isEmpty()){
@@ -84,7 +82,7 @@ public class VersionController {
             String suffixName = versionIcon.getOriginalFilename().substring(versionIcon.getOriginalFilename().lastIndexOf("."));
             TencentUtil.upload(versionIcon,versionKey);
             //例：3f947b8a-9c4d-4c48-af3d-db189354b8a6.jpg
-            version.setVersionIcon(versionKey+suffixName);
+            version.setVersionIcon(path+versionKey+suffixName);
         }
         versionService.updateByPrimaryKeySelective(version);
         return ResultUtil.success(versionService.selectByPrimaryKey(versionKey));
@@ -139,7 +137,7 @@ public class VersionController {
                 "<string>software-package</string>" +
                 "<key>url</key>" +
 //                "<string>http://192.168.11.117:8091/v1/version/download?versionKey="+versionKey+"</string>" +
-                "<string>https://lem-repo-1255447022.cos.ap-beijing.myqcloud.com/"+versionKey+".ipa</string>" +
+                "<string>"+path+versionKey+".ipa</string>" +
                 "</dict>" +
                 "<dict>" +
                 "<key>kind</key>" +
@@ -190,7 +188,7 @@ public class VersionController {
     @GetMapping("/download")
     public Result download (@RequestParam String versionKey){
         HashMap response = new HashMap();
-        response.put("ossUrl","https://lem-repo-1255447022.cos.ap-beijing.myqcloud.com/"+versionKey+".apk");
+        response.put("ossUrl",path+versionKey+".apk");
         return ResultUtil.success(response);
     }
 

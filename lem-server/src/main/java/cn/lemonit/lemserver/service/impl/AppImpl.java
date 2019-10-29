@@ -81,7 +81,7 @@ public class AppImpl implements AppService {
         if (spaceKey==null){
             throw new BaseBusinessException(ErrorMsg.invalid_args.toString());
         }
-        return appMapper.selectBySpacename(spaceKey);
+        return appMapper.selectBySpacekey(spaceKey);
     };
 
     @Override

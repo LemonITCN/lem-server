@@ -6,10 +6,7 @@ import cn.lemonit.lemserver.domian.App;
 import cn.lemonit.lemserver.domian.Result;
 import cn.lemonit.lemserver.service.TagService;
 import cn.lemonit.lemserver.service.VersionService;
-import cn.lemonit.lemserver.utils.BaseBusinessException;
-import cn.lemonit.lemserver.utils.LemoiUtil;
-import cn.lemonit.lemserver.utils.ResultUtil;
-import cn.lemonit.lemserver.utils.ErrorMsg;
+import cn.lemonit.lemserver.utils.*;
 import cn.lemonit.lemserver.service.AppService;
 import cn.lemonit.lemserver.service.impl.AppImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +38,7 @@ public class AppController {
     @Autowired
     private VersionService versionService;
 
-
-    public Date getDate (){
-        return new Timestamp(new Date().getTime());
-    };
+    private static final String path = "https://lem-repo-1255447022.cos.ap-beijing.myqcloud.com/";
 
     //创建app
     @PostMapping("")
@@ -59,14 +53,14 @@ public class AppController {
         app.setPlatform(platform);
         app.setAppKey(uuid);
         app.setAppDescription(appDescription);
-        app.setCreateTime(getDate());
+        app.setCreateTime(new Timestamp(new Date().getTime()););
         app.setSpaceKey(spaceKey);
         app.setBundleIdentifier(bundleIdentifier);
         if (appIcon!=null&&!appIcon.isEmpty()){
             String suffixName = appIcon.getOriginalFilename().substring(appIcon.getOriginalFilename().lastIndexOf("."));
-            LemoiUtil.upload(appIcon,uuid);
+            TencentUtil.upload(appIcon,uuid);
             //例：3f947b8a-9c4d-4c48-af3d-db189354b8a6.jpg
-            app.setAppIcon(uuid+suffixName);
+            app.setAppIcon(path+uuid+suffixName);
         }
         appService.insertSelective(app);
         return ResultUtil.success(appService.selectByPrimaryKey(uuid));
@@ -124,9 +118,9 @@ public class AppController {
         app.setAppDescription(appDescription);
         if (appIcon!=null&&!appIcon.isEmpty()){
             String suffixName = appIcon.getOriginalFilename().substring(appIcon.getOriginalFilename().lastIndexOf("."));
-            LemoiUtil.upload(appIcon,appKey);
+            TencentUtil.upload(appIcon,appKey);
             //例：3f947b8a-9c4d-4c48-af3d-db189354b8a6.jpg
-            app.setAppIcon(appKey+suffixName);
+            app.setAppIcon(path+appKey+suffixName);
         }
         appService.updateByPrimaryKeySelective(app);
         return ResultUtil.success(appService.selectByPrimaryKey(appKey));

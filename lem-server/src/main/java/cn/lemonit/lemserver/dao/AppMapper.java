@@ -21,7 +21,7 @@ public interface AppMapper {
 
     int updateByPrimaryKey(App record);
 
-    int selectBySpacename(String spaceKey);
+    int selectBySpacekey(String spaceKey);
 
     App selectByName(String appName);
 

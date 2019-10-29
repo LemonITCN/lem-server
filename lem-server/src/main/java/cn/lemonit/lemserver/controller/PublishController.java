@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
@@ -59,6 +60,7 @@ public class PublishController {
         response.put("versionDescription",version.getVersionDescription());
         response.put("versionKey",publish.getVersionKey());
         response.put("forceUpdate",publish.getForceUpdate());
+        Calendar calendar = Calendar.getInstance();
         response.put("createTime",version.getCreateTime());
         return ResultUtil.success(response);
     }
