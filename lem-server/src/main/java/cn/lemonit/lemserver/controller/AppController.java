@@ -53,7 +53,7 @@ public class AppController {
         app.setPlatform(platform);
         app.setAppKey(uuid);
         app.setAppDescription(appDescription);
-        app.setCreateTime(new Timestamp(new Date().getTime()););
+        app.setCreateTime(new Timestamp(new Date().getTime()));
         app.setSpaceKey(spaceKey);
         app.setBundleIdentifier(bundleIdentifier);
         if (appIcon!=null&&!appIcon.isEmpty()){
