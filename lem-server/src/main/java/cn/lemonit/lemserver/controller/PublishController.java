@@ -2,7 +2,9 @@ package cn.lemonit.lemserver.controller;
 
 import cn.lemonit.lemserver.domian.Publish;
 import cn.lemonit.lemserver.domian.Result;
+import cn.lemonit.lemserver.domian.Version;
 import cn.lemonit.lemserver.service.PublishService;
+import cn.lemonit.lemserver.service.VersionService;
 import cn.lemonit.lemserver.utils.ErrorMsg;
 import cn.lemonit.lemserver.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ import java.util.UUID;
 public class PublishController {
     @Autowired
     private PublishService publishService;
+
+    @Autowired
+    private VersionService versionService;
 
     public Date getDate (){
         return new Timestamp(new Date().getTime());
@@ -48,11 +53,13 @@ public class PublishController {
         if(publish==null){
             return ResultUtil.error("empty_data");
         }
+        Version version = versionService.selectByPrimaryKey(publish.getVersionKey());
         HashMap response = new HashMap();
         response.put("tagKey",publish.getTagKey());
+        response.put("versionDescription",version.getVersionDescription());
         response.put("versionKey",publish.getVersionKey());
         response.put("forceUpdate",publish.getForceUpdate());
-        response.put("publishTime",publish.getPublishTime().getTime()+"");
+        response.put("createTime",version.getCreateTime());
         return ResultUtil.success(response);
     }
 

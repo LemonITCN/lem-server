@@ -10,6 +10,7 @@ import cn.lemonit.lemserver.service.VersionService;
 import cn.lemonit.lemserver.utils.ErrorMsg;
 import cn.lemonit.lemserver.utils.LemoiUtil;
 import cn.lemonit.lemserver.utils.ResultUtil;
+import cn.lemonit.lemserver.utils.TencentUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,11 +57,11 @@ public class VersionController {
         version.setVersionDescription(versionDescription);
         version.setVersionKey(uuid);
         if(file!=null&&!file.isEmpty()){
-            LemoiUtil.upload(file,uuid);
+            TencentUtil.upload(file,uuid);
         }
         if (versionIcon!=null&&!versionIcon.isEmpty()){
             String suffixName = versionIcon.getOriginalFilename().substring(versionIcon.getOriginalFilename().lastIndexOf("."));
-            LemoiUtil.upload(versionIcon,uuid);
+            TencentUtil.upload(versionIcon,uuid);
             //例：3f947b8a-9c4d-4c48-af3d-db189354b8a6.jpg
             version.setVersionIcon(uuid+suffixName);
         }
@@ -77,11 +78,11 @@ public class VersionController {
         version.setVersionDescription(versionDescription);
         version.setVersionKey(versionKey);
         if(file!=null&&!file.isEmpty()){
-            LemoiUtil.upload(file,versionKey);
+            TencentUtil.upload(file,versionKey);
         }
         if (versionIcon!=null&&!versionIcon.isEmpty()){
             String suffixName = versionIcon.getOriginalFilename().substring(versionIcon.getOriginalFilename().lastIndexOf("."));
-            LemoiUtil.upload(versionIcon,versionKey);
+            TencentUtil.upload(versionIcon,versionKey);
             //例：3f947b8a-9c4d-4c48-af3d-db189354b8a6.jpg
             version.setVersionIcon(versionKey+suffixName);
         }
@@ -138,7 +139,7 @@ public class VersionController {
                 "<string>software-package</string>" +
                 "<key>url</key>" +
 //                "<string>http://192.168.11.117:8091/v1/version/download?versionKey="+versionKey+"</string>" +
-                "<string>https://oss.lemonit.cn/lem/"+versionKey+".ipa</string>" +
+                "<string>https://lem-repo-1255447022.cos.ap-beijing.myqcloud.com/"+versionKey+".ipa</string>" +
                 "</dict>" +
                 "<dict>" +
                 "<key>kind</key>" +
@@ -189,7 +190,7 @@ public class VersionController {
     @GetMapping("/download")
     public Result download (@RequestParam String versionKey){
         HashMap response = new HashMap();
-        response.put("ossUrl","https://oss.lemonit.cn/minio/lem/"+versionKey+".apk");
+        response.put("ossUrl","https://lem-repo-1255447022.cos.ap-beijing.myqcloud.com/"+versionKey+".apk");
         return ResultUtil.success(response);
     }
 
