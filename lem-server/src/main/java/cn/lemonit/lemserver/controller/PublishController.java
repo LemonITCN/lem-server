@@ -7,7 +7,10 @@ import cn.lemonit.lemserver.service.PublishService;
 import cn.lemonit.lemserver.service.VersionService;
 import cn.lemonit.lemserver.utils.ErrorMsg;
 import cn.lemonit.lemserver.utils.ResultUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +36,7 @@ public class PublishController {
 
     //关联publish
     @PostMapping("")
+    @ApiOperation(value = "绑定version到tag",httpMethod = "POST",produces = MediaType.APPLICATION_JSON_VALUE,notes = "绑定version到tag")
     public Result createPublish (@RequestBody Publish publish){
         publish.setPublishTime(getDate());
         if(publishService.selectByTagkey(publish.getTagKey())==null){

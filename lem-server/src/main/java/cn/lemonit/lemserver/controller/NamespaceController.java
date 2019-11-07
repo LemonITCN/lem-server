@@ -6,6 +6,8 @@ import cn.lemonit.lemserver.utils.ResultUtil;
 import cn.lemonit.lemserver.utils.ErrorMsg;
 import cn.lemonit.lemserver.service.NamespaceService;
 import cn.lemonit.lemserver.service.AppService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -56,6 +58,7 @@ public class NamespaceController {
 
     //查询命名空间列表
     @GetMapping("/list")
+    @ApiImplicitParams({@ApiImplicitParam(name = "Authorization", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
     public Result selecAll (@RequestParam(defaultValue="1") Integer page, @RequestParam(defaultValue = "10") Integer limit){
         return  ResultUtil.success(namespaceService.listByPageinfo((page-1)*limit,limit));
     }

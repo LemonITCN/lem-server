@@ -16,6 +16,7 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 
 import cn.lemonit.lemserver.utils.CORSFilter;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.unit.DataSize;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,9 +65,9 @@ public class LemServerApplication {
 	public MultipartConfigElement multipartConfigElement() {
 		MultipartConfigFactory factory = new MultipartConfigFactory();
 		//单个文件最大
-		factory.setMaxFileSize("102400KB"); //KB,MB
+		factory.setMaxFileSize(DataSize.parse("102400KB")); //KB,MB
 		/// 设置总上传数据总大小
-		factory.setMaxRequestSize("1024000KB");
+		factory.setMaxRequestSize(DataSize.parse("1024000KB"));
 		return factory.createMultipartConfig();
 	}
 }

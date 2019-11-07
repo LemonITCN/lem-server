@@ -145,7 +145,7 @@ public class VersionController {
                 "<key>needs-shine</key>" +
                 "<true/>" +
                 "<key>url</key>" +
-                "<string>https://oss.lemonit.cn/lem/v1/version/icon?versionKey="+versionKey+"</string>" +
+                "<string>"+version.getVersionIcon()+"</string>" +
                 "</dict>" +
                 "<dict>" +
                 "<key>kind</key>" +
@@ -153,7 +153,7 @@ public class VersionController {
                 "<key>needs-shine</key>" +
                 "<true/>" +
                 "<key>url</key>" +
-                "<string>https://oss.lemonit.cn/lem/v1/version/icon?versionKey="+versionKey+"size="+size+"</string>" +
+                "<string>"+version.getVersionIcon()+"</string>" +
                 "</dict>" +
                 "</array>" +
                 "<key>metadata</key>" +
