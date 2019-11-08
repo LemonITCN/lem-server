@@ -2,6 +2,7 @@ package cn.lemonit.lemserver.domian;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Proxy;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,7 +11,7 @@ import java.io.Serializable;
 @Table(name="sys_role")
 @Proxy(lazy = false)
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
-public class SysRole implements Serializable {
+public class SysRole implements GrantedAuthority,Serializable {
     static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -33,6 +34,11 @@ public class SysRole implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String getAuthority() {
+        return name;
     }
 }
 

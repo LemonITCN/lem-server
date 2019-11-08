@@ -19,7 +19,6 @@ public class ThreadUser implements UserDetails {
     private List<String> roleName;
 
     private List<SysRole> roles;
-
 //    private List<GrantedAuthority> authoritie;
 
     //返回分配给用户的角色列表

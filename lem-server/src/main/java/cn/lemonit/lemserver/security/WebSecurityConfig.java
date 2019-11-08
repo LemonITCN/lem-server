@@ -85,8 +85,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/v1/version/plist",
                         "/v1/version/download"
                 ).permitAll()
-                // 除上面外的所有请求全部需要鉴权认证
                 .antMatchers(HttpMethod.GET,"/v1/publish").permitAll()
+                // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();
 
         // 禁用缓存

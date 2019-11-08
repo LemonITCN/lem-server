@@ -4,7 +4,7 @@ import cn.lemonit.lemserver.domian.ResponseUserToken;
 import cn.lemonit.lemserver.domian.SysUser;
 import cn.lemonit.lemserver.domian.ThreadUser;
 import cn.lemonit.lemserver.exception.CustomException;
-import cn.lemonit.lemserver.repository.SysUserRepository;
+import cn.lemonit.lemserver.dao.SysUserRepository;
 import cn.lemonit.lemserver.utils.JwtUtils;
 import cn.lemonit.lemserver.utils.ResultCode;
 import cn.lemonit.lemserver.utils.ResultJson;

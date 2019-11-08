@@ -1,4 +1,4 @@
-package cn.lemonit.lemserver.repository;
+package cn.lemonit.lemserver.dao;
 
 import cn.lemonit.lemserver.domian.SysUserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
