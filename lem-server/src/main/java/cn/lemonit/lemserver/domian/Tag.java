@@ -14,17 +14,28 @@ public class Tag {
 
     private String tagName;
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    private String url;
+
     private Date createTime;
 
     private String tagDescription;
 
-    public Tag(String tagKey, String appKey, String tagName, Date createTime, String tagDescription) {
+    public Tag(String tagKey, String appKey, String tagName, Date createTime, String tagDescription,String url) {
         this.tagKey = tagKey;
 //        this.tagId = tagId;
         this.appKey = appKey;
         this.tagName = tagName;
         this.createTime = createTime;
         this.tagDescription = tagDescription;
+        this.url =  url;
     }
 
     public Tag() {

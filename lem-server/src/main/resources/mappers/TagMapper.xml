@@ -7,6 +7,7 @@
       <arg column="app_key" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="tag_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="url" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="cn.lemonit.lemserver.domian.Tag" >
@@ -16,10 +17,11 @@
       <arg column="tag_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="tag_description" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
+      <arg column="url" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    tag_key, app_key, tag_name, create_time
+    tag_key, app_key, tag_name, create_time,tag_description,url
   </sql>
   <sql id="Blob_Column_List" >
     tag_description
@@ -45,10 +47,10 @@
   </delete>
   <insert id="insert" parameterType="cn.lemonit.lemserver.domian.Tag" >
     insert into lem_tag (tag_key, tag_id, app_key, 
-      tag_name, create_time, tag_description
+      tag_name, create_time, tag_description,url
       )
     values (#{tagKey,jdbcType=VARCHAR}, #{tagId,jdbcType=INTEGER}, #{appKey,jdbcType=VARCHAR}, 
-      #{tagName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{tagDescription,jdbcType=LONGVARCHAR}
+      #{tagName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{tagDescription,jdbcType=LONGVARCHAR},#{url,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="cn.lemonit.lemserver.domian.Tag" >
@@ -72,6 +74,9 @@
       <if test="tagDescription != null" >
         tag_description,
       </if>
+      <if test="tagDescription != null" >
+        url
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="tagKey != null" >
@@ -92,6 +97,9 @@
       <if test="tagDescription != null" >
         #{tagDescription,jdbcType=LONGVARCHAR},
       </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR}
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="cn.lemonit.lemserver.domian.Tag" >
@@ -103,6 +111,9 @@
       <if test="tagDescription != null" >
         tag_description = #{tagDescription,jdbcType=LONGVARCHAR},
       </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR}
+      </if>
     </set>
     where tag_key = #{tagKey,jdbcType=VARCHAR}
   </update>
@@ -112,7 +123,8 @@
       app_key = #{appKey,jdbcType=VARCHAR},
       tag_name = #{tagName,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      tag_description = #{tagDescription,jdbcType=LONGVARCHAR}
+      tag_description = #{tagDescription,jdbcType=LONGVARCHAR},
+        url = #{url,jdbcType=VARCHAR}
     where tag_key = #{tagKey,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.lemonit.lemserver.domian.Tag" >
@@ -120,7 +132,8 @@
     set tag_id = #{tagId,jdbcType=INTEGER},
       app_key = #{appKey,jdbcType=VARCHAR},
       tag_name = #{tagName,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      url = #{url,jdbcType=VARCHAR}
     where tag_key = #{tagKey,jdbcType=VARCHAR}
   </update>
   <select id="selectByAppkey" parameterType="java.lang.String" resultType="java.lang.Integer">

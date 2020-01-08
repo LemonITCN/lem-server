@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,7 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import cn.lemonit.lemserver.utils.CORSFilter;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.unit.DataSize;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,6 +71,11 @@ public class LemServerApplication {
 		/// 设置总上传数据总大小
 		factory.setMaxRequestSize(DataSize.parse("1024000KB"));
 		return factory.createMultipartConfig();
+	}
+	@Bean
+	@LoadBalanced
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
 	}
 }
 
