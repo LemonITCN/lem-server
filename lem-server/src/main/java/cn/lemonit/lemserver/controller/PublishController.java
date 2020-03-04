@@ -97,7 +97,7 @@ public class PublishController {
         if(publish==null){
             return ResultUtil.error("empty_data");
         }
-        if(response1.getBody().length()<=2){
+        if(response1.getBody().length()<=2  ){
             HashMap response = new HashMap();
             response.put("tagKey",publish.getTagKey());
             response.put("versionDescription",version.getVersionDescription());
