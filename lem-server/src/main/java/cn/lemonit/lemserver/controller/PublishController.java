@@ -89,14 +89,12 @@ public class PublishController {
         String tagKey = (String) map.get("tagKey");
         System.out.println("tagKey："+map+"······");
         Tag tag = tagService.selectByPrimaryKey(tagKey);
-        HttpEntity<Map> httpEntity = new HttpEntity<>(map);
-        ResponseEntity<String> response1  = restTemplate.exchange(tag.getUrl(), HttpMethod.POST, httpEntity,String.class);
-        Object body = JSONObject.parse(response1.getBody());
         Publish publish = publishService.selectByTagkey(tagKey);
         if(publish==null){
             return ResultUtil.error("empty_data");
         }
-        if(response1.getBody().equals("")||response1.getBody()==null){
+        if (tag.getUrl()==null||tag.getUrl().equals("")){
+            //tag没配url
             Version version = versionService.selectByPrimaryKey(publish.getVersionKey());
             HashMap response = new HashMap();
             response.put("tagKey",publish.getTagKey());
@@ -106,14 +104,30 @@ public class PublishController {
             response.put("createTime",version.getCreateTime());
             return ResultUtil.success(response);
         }else {
-            HashMap response = new HashMap();
-            Version version1 = versionService.selectByPrimaryKey(response1.getBody());
-            response.put("versionDescription",version1.getVersionDescription());
-            response.put("versionKey",response1.getBody());
-            response.put("forceUpdate",1);
-            response.put("createTime",version1.getCreateTime());
-            return ResultUtil.success(response);
-
+            HttpEntity<Map> httpEntity = new HttpEntity<>(map);
+            ResponseEntity<String> response1  = restTemplate.exchange(tag.getUrl(), HttpMethod.POST, httpEntity,String.class);
+            if(response1.getBody().equals("")||response1.getBody()==null){
+                //新扬接口返回空
+                Version version = versionService.selectByPrimaryKey(publish.getVersionKey());
+                HashMap response = new HashMap();
+                response.put("tagKey",publish.getTagKey());
+                response.put("versionDescription",version.getVersionDescription());
+                response.put("versionKey",publish.getVersionKey());
+                response.put("forceUpdate",publish.getForceUpdate());
+                response.put("createTime",version.getCreateTime());
+                return ResultUtil.success(response);
+            }else {
+                HashMap response = new HashMap();
+                Version version1 = versionService.selectByPrimaryKey(response1.getBody());
+                if(version1==null){
+                    version1 = versionService.selectByPrimaryKey(publish.getVersionKey());
+                }
+                response.put("versionDescription",version1.getVersionDescription());
+                response.put("versionKey",response1.getBody());
+                response.put("forceUpdate",1);
+                response.put("createTime",version1.getCreateTime());
+                return ResultUtil.success(response);
+            }
         }
     }
 
