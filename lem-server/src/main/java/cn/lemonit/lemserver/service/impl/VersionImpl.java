@@ -43,9 +43,7 @@ public class VersionImpl implements VersionService {
             throw new BaseBusinessException(ErrorMsg.invalid_args.toString());
         }
         Version version = versionMapper.selectByPrimaryKey(versionKey);
-        if (version==null){
-            throw new BaseBusinessException(ErrorMsg.version_does_not_exit.toString());
-        }
+
         return version;
     };
 

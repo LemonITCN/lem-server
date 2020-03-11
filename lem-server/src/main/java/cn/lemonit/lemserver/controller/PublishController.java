@@ -8,16 +8,17 @@ import cn.lemonit.lemserver.service.PublishService;
 import cn.lemonit.lemserver.service.TagService;
 import cn.lemonit.lemserver.service.VersionService;
 import cn.lemonit.lemserver.utils.ResultUtil;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.core.io.JsonStringEncoder;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import sun.net.www.http.HttpClient;
+
 import java.io.*;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
@@ -87,6 +88,7 @@ public class PublishController {
     @ApiOperation(value = "不同人员对应不同版本",httpMethod = "POST",produces = MediaType.APPLICATION_JSON_VALUE,notes = "不同人员对应不同版本")
     public Result postVersion (@RequestBody HashMap map){
         String tagKey = (String) map.get("tagKey");
+//        Map map1 = (Map) map.get("map");
         System.out.println("tagKey："+map+"······");
         Tag tag = tagService.selectByPrimaryKey(tagKey);
         Publish publish = publishService.selectByTagkey(tagKey);
@@ -94,7 +96,7 @@ public class PublishController {
             return ResultUtil.error("empty_data");
         }
         if (tag.getUrl()==null||tag.getUrl().equals("")){
-            //tag没配url
+            //tag没配url,正常返回
             Version version = versionService.selectByPrimaryKey(publish.getVersionKey());
             HashMap response = new HashMap();
             response.put("tagKey",publish.getTagKey());
@@ -104,9 +106,12 @@ public class PublishController {
             response.put("createTime",version.getCreateTime());
             return ResultUtil.success(response);
         }else {
-            HttpEntity<Map> httpEntity = new HttpEntity<>(map);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<Map> httpEntity = new HttpEntity<>(map,headers);
             ResponseEntity<String> response1  = restTemplate.exchange(tag.getUrl(), HttpMethod.POST, httpEntity,String.class);
-            if(response1.getBody().equals("")||response1.getBody()==null){
+            String ver = (String) JSON.parse(response1.getBody());
+            if(ver.equals("")||ver==null){
                 //新扬接口返回空
                 Version version = versionService.selectByPrimaryKey(publish.getVersionKey());
                 HashMap response = new HashMap();
@@ -117,13 +122,14 @@ public class PublishController {
                 response.put("createTime",version.getCreateTime());
                 return ResultUtil.success(response);
             }else {
+                //
                 HashMap response = new HashMap();
-                Version version1 = versionService.selectByPrimaryKey(response1.getBody());
+                Version version1 = versionService.selectByPrimaryKey(ver);
                 if(version1==null){
                     version1 = versionService.selectByPrimaryKey(publish.getVersionKey());
                 }
                 response.put("versionDescription",version1.getVersionDescription());
-                response.put("versionKey",response1.getBody());
+                response.put("versionKey",version1.getVersionKey());
                 response.put("forceUpdate",1);
                 response.put("createTime",version1.getCreateTime());
                 return ResultUtil.success(response);
