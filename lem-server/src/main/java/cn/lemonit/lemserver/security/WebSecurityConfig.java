@@ -86,6 +86,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/v1/version/download"
                 ).permitAll()
                 .antMatchers(HttpMethod.GET,"/v1/publish").permitAll()
+                .antMatchers(HttpMethod.GET,"/v1/tag/appDetail").permitAll()
                 .antMatchers(HttpMethod.POST,"/v1/publish/postVersion").permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();

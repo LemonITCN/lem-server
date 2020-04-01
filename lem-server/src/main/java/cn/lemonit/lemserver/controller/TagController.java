@@ -1,10 +1,12 @@
 package cn.lemonit.lemserver.controller;
 
+import cn.lemonit.lemserver.domian.App;
 import cn.lemonit.lemserver.domian.Result;
 import cn.lemonit.lemserver.domian.Tag;
 import cn.lemonit.lemserver.service.AppService;
 import cn.lemonit.lemserver.service.PublishService;
 import cn.lemonit.lemserver.service.TagService;
+import cn.lemonit.lemserver.service.VersionService;
 import cn.lemonit.lemserver.utils.ErrorMsg;
 import cn.lemonit.lemserver.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/v1/tag")
@@ -28,9 +27,15 @@ public class TagController {
     @Autowired
     private PublishService publishService;
 
+    @Autowired
+    private VersionService versionService;
+    @Autowired
+    private AppService appService;
+
     public Date getDate (){
         return new Timestamp(new Date().getTime());
     };
+    private static final String path = "https://lem-repo-1255447022.cos.ap-beijing.myqcloud.com/";
 
     //创建tag
     @PostMapping("")
@@ -83,5 +88,23 @@ public class TagController {
         tagService.deleteByPrimaryKey(tagKey);
 
         return ResultUtil.success(null);
+    }
+
+    //查询tag列表
+    @GetMapping("/appDetail")
+    public Result getAppDetail (@RequestParam String tagKey){
+        Map map = new HashMap();
+        Tag tag = tagService.selectByPrimaryKey(tagKey);
+        App app = appService.selectByPrimaryKey(tag.getAppKey());
+        String versionKey = publishService.selectByTagkey(tagKey).getVersionKey();
+        map.put("tag",tag);
+        map.put("app",app);
+        map.put("version",versionService.selectByPrimaryKey(versionKey));
+        if(app.getPlatform().equals("ios")){
+            map.put("downloadUrl","/v1/version/plist?versionKey="+versionKey);
+        }else {
+            map.put("downloadUrl","/v1/version/download?versionKey="+versionKey);
+        }
+        return  ResultUtil.success(map);
     }
 }
