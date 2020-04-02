@@ -3,6 +3,7 @@ package cn.lemonit.lemserver.controller;
 import cn.lemonit.lemserver.domian.App;
 import cn.lemonit.lemserver.domian.Result;
 import cn.lemonit.lemserver.domian.Tag;
+import cn.lemonit.lemserver.domian.Version;
 import cn.lemonit.lemserver.service.AppService;
 import cn.lemonit.lemserver.service.PublishService;
 import cn.lemonit.lemserver.service.TagService;
@@ -97,9 +98,11 @@ public class TagController {
         Tag tag = tagService.selectByPrimaryKey(tagKey);
         App app = appService.selectByPrimaryKey(tag.getAppKey());
         String versionKey = publishService.selectByTagkey(tagKey).getVersionKey();
+        Version version = versionService.selectByPrimaryKey(versionKey);
         map.put("tag",tag);
         map.put("app",app);
         map.put("version",versionService.selectByPrimaryKey(versionKey));
+        map.put("icon",version.getVersionIcon());
         if(app.getPlatform().equals("ios")){
             map.put("downloadUrl","/v1/version/plist?versionKey="+versionKey);
         }else {

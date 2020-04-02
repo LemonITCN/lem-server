@@ -19,6 +19,8 @@ import cn.lemonit.lemserver.utils.CORSFilter;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.unit.DataSize;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +42,16 @@ public class LemServerApplication {
 //	}
 	@Value("${http.port}")
 	private Integer port;
-
+	@Bean
+	public WebMvcConfigurer corsConfigurer()
+	{
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**").allowedOrigins("*").allowedMethods("*").allowCredentials(true);
+			}
+		};
+	}
 	// 这是spring boot 2.0.X版本的 添加这个，上一个就不用添加了
 	@Bean
 	public ServletWebServerFactory servletContainer() {
