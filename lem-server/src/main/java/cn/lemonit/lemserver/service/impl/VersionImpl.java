@@ -74,7 +74,7 @@ public class VersionImpl implements VersionService {
     };
 
     @Override
-    public List listByPageinfo(Integer start, Integer end){
-        return versionMapper.listByPageinfo(start,end);
+    public List listByPageinfo(Integer start, Integer end,String appKey){
+        return versionMapper.listByPageinfo(start,end,appKey);
     };
 }

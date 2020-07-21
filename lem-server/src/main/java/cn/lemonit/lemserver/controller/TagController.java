@@ -72,8 +72,8 @@ public class TagController {
 
     //查询tag列表
     @GetMapping("/list")
-    public Result selecttag (@RequestParam(defaultValue="1") Integer page, @RequestParam(defaultValue = "10") Integer limit){
-        return  ResultUtil.success(tagService.listByPageinfo((page-1)*limit,limit));
+    public Result selecttag (@ModelAttribute String appKey,@RequestParam(defaultValue="1") Integer page, @RequestParam(defaultValue = "10") Integer limit){
+        return  ResultUtil.success(tagService.listByPageinfo((page-1)*limit,limit,appKey));
     }
 
     @DeleteMapping("")

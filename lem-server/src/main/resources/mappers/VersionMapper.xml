@@ -25,7 +25,7 @@
     version_description
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
-    select 
+    select
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
@@ -37,9 +37,9 @@
     where version_key = #{versionKey,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="cn.lemonit.lemserver.domian.Version">
-    insert into lem_version (version_key, version_id, create_time, 
+    insert into lem_version (version_key, version_id, create_time,
       app_key, version_description,version_icon)
-    values (#{versionKey,jdbcType=VARCHAR}, #{versionId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+    values (#{versionKey,jdbcType=VARCHAR}, #{versionId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
       #{appKey,jdbcType=VARCHAR}, #{versionDescription,jdbcType=LONGVARCHAR}), #{versionIcon,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.lemonit.lemserver.domian.Version">
@@ -126,6 +126,9 @@
     select
     *
     from lem_version
+    <if test="appKey != null" >
+      where app_key = #{appKey},
+    </if>
     order by create_time desc
     limit #{start},#{end}
   </select>

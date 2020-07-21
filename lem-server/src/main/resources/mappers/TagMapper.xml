@@ -27,7 +27,7 @@
     tag_description
   </sql>
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
@@ -46,10 +46,10 @@
     where tag_key = #{tagKey,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="cn.lemonit.lemserver.domian.Tag" >
-    insert into lem_tag (tag_key, tag_id, app_key, 
+    insert into lem_tag (tag_key, tag_id, app_key,
       tag_name, create_time, tag_description,url
       )
-    values (#{tagKey,jdbcType=VARCHAR}, #{tagId,jdbcType=INTEGER}, #{appKey,jdbcType=VARCHAR}, 
+    values (#{tagKey,jdbcType=VARCHAR}, #{tagId,jdbcType=INTEGER}, #{appKey,jdbcType=VARCHAR},
       #{tagName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{tagDescription,jdbcType=LONGVARCHAR},#{url,jdbcType=VARCHAR}
       )
   </insert>
@@ -145,6 +145,9 @@
     select
     *
     from lem_tag
+    <if test="appKey != null" >
+      where app_key = #{appKey},
+    </if>
     order by create_time desc
     limit #{start},#{end}
   </select>

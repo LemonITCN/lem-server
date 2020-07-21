@@ -21,6 +21,6 @@ public interface VersionService {
 
     int selectByAppkey(String appKey);
 
-    List listByPageinfo(Integer start, Integer end);
+    List listByPageinfo(Integer start, Integer end,String appKey);
 
 }

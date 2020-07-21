@@ -92,7 +92,7 @@ public class TagImpl implements TagService {
     };
 
     @Override
-    public List listByPageinfo(Integer start, Integer end){
-        return tagMapper.listByPageinfo(start,end);
+    public List listByPageinfo(Integer start, Integer end,String appKey){
+        return tagMapper.listByPageinfo(start,end,appKey);
     };
 }

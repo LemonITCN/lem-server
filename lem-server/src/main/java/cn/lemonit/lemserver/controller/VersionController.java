@@ -242,8 +242,8 @@ public class VersionController {
 
     //查询version列表
     @GetMapping("/list")
-    public Result selectversion (@RequestParam(defaultValue="1") Integer page, @RequestParam(defaultValue = "10") Integer limit){
-        return  ResultUtil.success(versionService.listByPageinfo((page-1)*limit,limit));
+    public Result selectversion (@ModelAttribute String appKey,@RequestParam(defaultValue="1") Integer page, @RequestParam(defaultValue = "10") Integer limit){
+        return  ResultUtil.success(versionService.listByPageinfo((page-1)*limit,limit,appKey));
     }
 
 }
