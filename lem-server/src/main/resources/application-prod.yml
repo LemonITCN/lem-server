@@ -3,10 +3,10 @@ http:
 
 server:
   port: 9090
-  ssl:
-    key-store: classpath:keystore.jks
-    key-store-password: zwPK@2018
-    key-password: zwPK@2018
+#  ssl:
+#    key-store: classpath:keystore.jks
+#    key-store-password: zwPK@2018
+#    key-password: zwPK@2018
 spring:
   servlet:
     multipart:
