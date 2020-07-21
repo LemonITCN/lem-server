@@ -109,7 +109,8 @@ public class PublishController {
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<Map> httpEntity = new HttpEntity<>(map,headers);
             ResponseEntity<String> response1  = restTemplate.exchange(tag.getUrl(), HttpMethod.POST, httpEntity,String.class);
-            String ver = (String) JSON.parse(response1.getBody());
+//            String ver = (String) JSON.parse(response1.getBody());
+            String ver = response1.getBody();
             if(ver.equals("")||ver==null){
                 //新扬接口返回空
                 Version version = versionService.selectByPrimaryKey(publish.getVersionKey());
@@ -134,6 +135,12 @@ public class PublishController {
                 return ResultUtil.success(response);
             }
         }
+    }
+
+
+    public static void main(String[] args) {
+        String ver = (String) JSON.parse(null);
+        System.out.println(ver);
     }
 
 }
