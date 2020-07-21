@@ -111,7 +111,7 @@ public class PublishController {
             ResponseEntity<String> response1  = restTemplate.exchange(tag.getUrl(), HttpMethod.POST, httpEntity,String.class);
 //            String ver = (String) JSON.parse(response1.getBody());
             String ver = response1.getBody();
-            if(ver.equals("")||ver==null){
+            if(ver.equals("none")||ver==null){
 
                 Version version = versionService.selectByPrimaryKey(publish.getVersionKey());
                 HashMap response = new HashMap();
