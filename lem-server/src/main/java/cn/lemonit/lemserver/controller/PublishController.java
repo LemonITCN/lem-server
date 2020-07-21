@@ -112,7 +112,7 @@ public class PublishController {
 //            String ver = (String) JSON.parse(response1.getBody());
             String ver = response1.getBody();
             if(ver.equals("")||ver==null){
-                //新扬接口返回空
+                
                 Version version = versionService.selectByPrimaryKey(publish.getVersionKey());
                 HashMap response = new HashMap();
                 response.put("tagKey",publish.getTagKey());
