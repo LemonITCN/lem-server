@@ -48,3 +48,7 @@ mybatis:
   logging:
     level:
       com.example.demo.dao: debug
+oss:
+  serverPath: https://lem-repo-1255447022.cos.ap-beijing.myqcloud.com
+  accessKey: AKIDzoQomZ5nCSWWM1w4MZbUEm4OVN0P3vNd
+  secretKey: C9waDcu2yyokwviNslV4QXTFtQQ9crth

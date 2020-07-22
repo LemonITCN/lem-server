@@ -4,13 +4,11 @@ import cn.lemonit.lemoi.exceptions.ConfigInvalidException;
 import cn.lemonit.lemserver.domian.App;
 import cn.lemonit.lemserver.domian.Result;
 import cn.lemonit.lemserver.domian.Version;
+import cn.lemonit.lemserver.security.OssConfig;
 import cn.lemonit.lemserver.service.AppService;
 import cn.lemonit.lemserver.service.PublishService;
 import cn.lemonit.lemserver.service.VersionService;
-import cn.lemonit.lemserver.utils.ErrorMsg;
-import cn.lemonit.lemserver.utils.LemoiUtil;
-import cn.lemonit.lemserver.utils.ResultUtil;
-import cn.lemonit.lemserver.utils.TencentUtil;
+import cn.lemonit.lemserver.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,6 +33,11 @@ public class VersionController {
     @Autowired
     private PublishService publishService;
 
+    @Autowired
+    private OssConfig ossConfig;
+
+    private String bucket = "lem-repo-1255447022";
+
     private static final String path = "https://lem-repo-1255447022.cos.ap-beijing.myqcloud.com/";
 
     //上传version
@@ -55,6 +58,7 @@ public class VersionController {
         version.setVersionDescription(versionDescription);
         version.setVersionKey(uuid);
         if(file!=null&&!file.isEmpty()){
+//            S3Util.uploadFile(S3Util.getClient(ossConfig), bucket, file,uuid);
             TencentUtil.upload(file,uuid);
         }
         if (versionIcon!=null&&!versionIcon.isEmpty()){

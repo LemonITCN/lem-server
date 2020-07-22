@@ -42,7 +42,7 @@ public class TencentUtil {
         COSCredentials cred = new BasicCOSCredentials(accessKey, secretKey);
         // 2 设置bucket的区域, COS地域的简称请参照 https://cloud.tencent.com/document/product/436/6224
         ClientConfig clientConfig = new ClientConfig(new Region(bucket));
-        // 3 生成cos客户端
+        // 3 生成cos客户端setBucketPolicy
         COSClient cosclient = new COSClient(cred, clientConfig);
         // bucket的命名规则为{name}-{appid} ，此处填写的存储桶名称必须为此格式
 

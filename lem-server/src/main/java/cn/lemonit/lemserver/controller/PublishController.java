@@ -130,7 +130,7 @@ public class PublishController {
                 }
                 response.put("versionDescription",version1.getVersionDescription());
                 response.put("versionKey",version1.getVersionKey());
-                response.put("forceUpdate",1);
+                response.put("forceUpdate",true);
                 response.put("createTime",version1.getCreateTime());
                 return ResultUtil.success(response);
             }
