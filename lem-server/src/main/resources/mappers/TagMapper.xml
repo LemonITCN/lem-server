@@ -146,8 +146,8 @@
     *
     from lem_tag
     <if test="appKey != null" >
-      where app_key = #{appKey},
-    </if>
+      where app_key = #{appKey}
+    </if>listByPageinfo
     order by create_time desc
     limit #{start},#{end}
   </select>

@@ -127,7 +127,7 @@
     *
     from lem_version
     <if test="appKey != null" >
-      where app_key = #{appKey},
+      where app_key = #{appKey}
     </if>
     order by create_time desc
     limit #{start},#{end}
