@@ -4,6 +4,7 @@ import cn.lemonit.lemserver.domian.Version;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface VersionMapper {
@@ -23,6 +24,6 @@ public interface VersionMapper {
 
     int selectByAppkey(String appKey);
 
-    List listByPageinfo(Integer start, Integer end,String appKey);
 
+    List listByPageinfo(Map<String, Object> map);
 }

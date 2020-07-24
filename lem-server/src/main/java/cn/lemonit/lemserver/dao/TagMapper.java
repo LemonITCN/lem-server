@@ -4,6 +4,7 @@ import cn.lemonit.lemserver.domian.Tag;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface TagMapper {
@@ -25,6 +26,6 @@ public interface TagMapper {
 
     int selectByAppkey(String appKey);
 
-    List listByPageinfo(Integer start, Integer end,String appKey);
 
+    List listByPageinfo(Map<String, Object> map);
 }

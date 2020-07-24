@@ -9,7 +9,9 @@ import cn.lemonit.lemserver.utils.ErrorMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TagImpl implements TagService {
@@ -93,6 +95,10 @@ public class TagImpl implements TagService {
 
     @Override
     public List listByPageinfo(Integer start, Integer end,String appKey){
-        return tagMapper.listByPageinfo(start,end,appKey);
+        Map<String,Object> map = new HashMap<>();
+        map.put("start",start);
+        map.put("end",end);
+        map.put("appKey",appKey);
+        return tagMapper.listByPageinfo(map);
     };
 }

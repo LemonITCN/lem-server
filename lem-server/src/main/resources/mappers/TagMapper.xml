@@ -141,7 +141,7 @@
     count(*)
     from lem_tag where app_key=#{appKey}
   </select>
-  <select id="listByPageinfo" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+  <select id="listByPageinfo" resultMap="ResultMapWithBLOBs" parameterType="Map">
     select
     *
     from lem_tag
